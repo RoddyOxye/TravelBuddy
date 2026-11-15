@@ -1,4 +1,5 @@
-
+import { globalStyles } from '../styles/globalStyles';
+import { colors } from '../theme/colors';
 import React, { useState } from "react";
 import {
   View,
@@ -40,7 +41,9 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+  style={globalStyles.screen}
+  contentContainerStyle={{ padding: 20 }}>
       <View style={styles.section}>
         <TextInput
           placeholder="Pesquisar destinos..."
@@ -108,11 +111,6 @@ export default function HomeScreen() {
 
 // Estilos mínimos e temporários
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#FFFFFF",
-  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
