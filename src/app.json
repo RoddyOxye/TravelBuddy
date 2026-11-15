@@ -23,7 +23,13 @@
     },
     "plugins": [
       "expo-status-bar",
-      "expo-image"
+      "expo-image",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "FFF8EE"
+        }
+      ]
     ]
   }
 }
