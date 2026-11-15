@@ -5,7 +5,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  FlatList,
   ScrollView,
+  StyleSheet,
   Alert,
 } from "react-native";
 
@@ -24,8 +26,8 @@ const destinations: Destination[] = [
 ];
 
 export default function HomeScreen() {
-  const [search, setSearch] = useState("");
 
+  const [search, setSearch] = useState("");
   const filteredDestinations = destinations.filter(
     (destination) =>
       destination.name
@@ -37,32 +39,30 @@ export default function HomeScreen() {
     Alert.alert(destination.name, destination.country);
   };
 
-  const handleCreateTrip = () => {
-    Alert.alert("Viagens", "Funcionalidade em desenvolvimento");
-  };
-
-  const handleChallenges = () => {
-    Alert.alert("Desafios", "Funcionalidade em desenvolvimento");
-  };
-
   return (
-    <ScrollView>
-      <View>
+    <ScrollView style={styles.container}>
+      <View style={styles.section}>
         <TextInput
           placeholder="Pesquisar destinos..."
           value={search}
           onChangeText={setSearch}
+          style={styles.input}
         />
       </View>
 
-      <View>
-        <Text>Explorar destinos</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          Explorar destinos
+        </Text>
 
         {filteredDestinations.length > 0 ? (
           filteredDestinations.map((destination) => (
             <TouchableOpacity
               key={destination.id}
-              onPress={() => handleDestinationPress(destination)}
+              style={styles.card}
+              onPress={() =>
+                handleDestinationPress(destination)
+              }
             >
               <Text>{destination.name}</Text>
               <Text>{destination.country}</Text>
@@ -73,21 +73,69 @@ export default function HomeScreen() {
         )}
       </View>
 
-      <View>
-        <Text>As minhas viagens</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          As minhas viagens
+        </Text>
 
-        <TouchableOpacity onPress={handleCreateTrip}>
-          <Text>+ Criar nova viagem</Text>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() =>
+            Alert.alert("Viagens", "Funcionalidade futura")
+          }
+        >
+          <Text>Criar nova viagem +</Text>
         </TouchableOpacity>
       </View>
 
-      <View>
-        <Text>Desafios</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          Desafios
+        </Text>
 
-        <TouchableOpacity onPress={handleChallenges}>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() =>
+            Alert.alert("Desafios", "Funcionalidade futura")
+          }
+        >
           <Text>Explorar desafios</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
+
+// Estilos mínimos e temporários
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#FFFFFF",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  section: {
+    marginTop: 24,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 12,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#CCCCCC",
+    padding: 12,
+    borderRadius: 8,
+  },
+  card: {
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#DDDDDD",
+    marginBottom: 10,
+    borderRadius: 8,
+  },
+});
