@@ -62,7 +62,7 @@ export default function HomeScreen() {
           filteredDestinations.map((destination) => (
             <TouchableOpacity
               key={destination.id}
-              style={styles.card}
+              style={globalStyles.card}
               onPress={() =>
                 handleDestinationPress(destination)
               }
@@ -82,7 +82,7 @@ export default function HomeScreen() {
         </Text>
 
         <TouchableOpacity
-          style={styles.card}
+          style={globalStyles.card}
           onPress={() =>
             Alert.alert("Viagens", "Funcionalidade futura")
           }
@@ -97,7 +97,7 @@ export default function HomeScreen() {
         </Text>
 
         <TouchableOpacity
-          style={styles.card}
+          style={globalStyles.card}
           onPress={() =>
             Alert.alert("Desafios", "Funcionalidade futura")
           }
@@ -127,13 +127,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#CCCCCC",
     padding: 12,
-    borderRadius: 8,
-  },
-  card: {
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "#DDDDDD",
-    marginBottom: 10,
     borderRadius: 8,
   },
 });

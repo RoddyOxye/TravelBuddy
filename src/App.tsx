@@ -4,6 +4,11 @@ import { StatusBar } from 'expo-status-bar';
 import HomeScreen from './screens/HomeScreen';
 import LoadingScreen from './screens/LoadingScreen';
 import { globalStyles } from './styles/globalStyles';
+import Header from './components/Header';
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+} from 'react-native-safe-area-context';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -14,9 +19,18 @@ export default function App() {
   }, []);
 
   return (
-    <View style={globalStyles.screen}>
-      <StatusBar style="dark" />
-      {loading ? <LoadingScreen /> : <HomeScreen />}
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={globalStyles.screen}>
+        <StatusBar style="dark" />
+        {loading ? (
+          <LoadingScreen />
+        ) : (
+          <>
+            <Header />
+            <HomeScreen />
+          </>
+        )}
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
