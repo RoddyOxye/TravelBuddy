@@ -10,25 +10,87 @@ import {
   FlatList,
   ScrollView,
   Alert,
+  Image,
 } from "react-native";
 
 interface Destination {
   id: string;
   name: string;
   country: string;
+  description: string;
+  image: string;
+}
+
+interface Trip {
+  id: string;
+  destination: string;
+  country: string;
+  startDate: string;
+  endDate: string;
+  status: "planned" | "completed";
 }
 
 const destinations: Destination[] = [
-  { id: "1", name: "Lisboa", country: "Portugal" },
-  { id: "2", name: "Porto", country: "Portugal" },
-  { id: "3", name: "Paris", country: "França" },
-  { id: "4", name: "Roma", country: "Itália" },
-  { id: "5", name: "Londres", country: "Reino Unido" },
+  {
+    id: "1",
+    name: "Lisboa",
+    country: "Portugal",
+    description: "História, cultura e gastronomia",
+    image: "https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=600",
+  },
+  {
+    id: "2",
+    name: "Porto",
+    country: "Portugal",
+    description: "Vinho, paisagens e tradição",
+    image: "https://images.unsplash.com/photo-1555881400-69a2384ed3fb?w=600",
+  },
+  {
+    id: "3",
+    name: "Paris",
+    country: "França",
+    description: "Arte, romance e monumentos",
+    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600",
+  },
+  {
+    id: "4",
+    name: "Roma",
+    country: "Itália",
+    description: "História e arquitetura",
+    image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=600",
+  },
+  {
+    id: "5",
+    name: "Londres",
+    country: "Reino Unido",
+    description: "Museus, cultura e atrações",
+    image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600",
+  },
+];
+
+const trips: Trip[] = [
+  {
+    id: "1",
+    destination: "Paris",
+    country: "França",
+    startDate: "2027-04-10",
+    endDate: "2027-04-15",
+    status: "planned",
+  },
+  {
+    id: "2",
+    destination: "Roma",
+    country: "Itália",
+    startDate: "2026-08-05",
+    endDate: "2026-08-10",
+    status: "completed",
+  },
 ];
 
 export default function HomeScreen() {
 
   const [search, setSearch] = useState("");
+
   const filteredDestinations = destinations.filter(
     (destination) =>
       destination.name
@@ -41,6 +103,21 @@ export default function HomeScreen() {
   };
 
   const [greeting] = useState(getGreeting);
+
+  const handleTripPress = (trip: Trip) => {
+    Alert.alert(
+      `Viagem a ${trip.destination}`,
+      `${trip.country}\nDe ${trip.startDate} até ${trip.endDate}`
+    );
+  };
+
+  const handleCreateTrip = () => {
+    Alert.alert("Viagens", "Funcionalidade em desenvolvimento");
+  };
+
+  const handleChallenges = () => {
+    Alert.alert("Desafios", "Funcionalidade em desenvolvimento");
+  };
 
   return (
     <ScrollView
@@ -69,22 +146,32 @@ export default function HomeScreen() {
           Explorar destinos
         </Text>
 
-        {filteredDestinations.length > 0 ? (
-          filteredDestinations.map((destination) => (
+        <FlatList
+          data={filteredDestinations}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
             <TouchableOpacity
-              key={destination.id}
-              style={globalStyles.card}
-              onPress={() =>
-                handleDestinationPress(destination)
-              }
+              onPress={() => handleDestinationPress(item)}
             >
-              <Text style={globalStyles.bodyText}>{destination.name}</Text>
-              <Text style={globalStyles.secondaryText}>{destination.country}</Text>
+              <Image
+                source={{ uri: item.image }}
+                style={{ width: 200, height: 140 }}
+                resizeMode="cover"
+              />
+
+              <Text style={globalStyles.bodyText}>
+                {item.name}, {item.country}
+              </Text>
+
+              <Text style={globalStyles.secondaryText}>{item.description}</Text>
             </TouchableOpacity>
-          ))
-        ) : (
-          <Text style={globalStyles.bodyText}>Nenhum destino encontrado.</Text>
-        )}
+          )}
+          ListEmptyComponent={
+            <Text style={globalStyles.bodyText}>Nenhum destino encontrado.</Text>
+          }
+        />
       </View>
 
       <View style={globalStyles.section}>
@@ -92,13 +179,33 @@ export default function HomeScreen() {
           As minhas viagens
         </Text>
 
+        {trips.map((trip) => (
+          <TouchableOpacity
+            key={trip.id}
+            style={globalStyles.card}
+            onPress={() => handleTripPress(trip)}
+          >
+            <Text>
+              {trip.destination}, {trip.country}
+            </Text>
+
+            <Text>
+              {trip.startDate} - {trip.endDate}
+            </Text>
+
+            <Text>
+              {trip.status === "planned"
+                ? "Viagem planeada"
+                : "Viagem concluída"}
+            </Text>
+          </TouchableOpacity>
+        ))}
+
         <TouchableOpacity
           style={globalStyles.primaryButton}
-          onPress={() =>
-            Alert.alert("Viagens", "Funcionalidade futura")
-          }
+          onPress={handleCreateTrip}
         >
-          <Text style={globalStyles.primaryButtonText}>Criar nova viagem +</Text>
+          <Text style={globalStyles.primaryButtonText}>+ Criar nova viagem</Text>
         </TouchableOpacity>
       </View>
 
@@ -109,13 +216,12 @@ export default function HomeScreen() {
 
         <TouchableOpacity
           style={globalStyles.secondaryButton}
-          onPress={() =>
-            Alert.alert("Desafios", "Funcionalidade futura")
-          }
+          onPress={handleChallenges}
         >
           <Text style={globalStyles.secondcaryButtonText}>Explorar desafios</Text>
         </TouchableOpacity>
       </View>
+
     </ScrollView>
   );
 }
