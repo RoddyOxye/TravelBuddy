@@ -153,6 +153,7 @@ export default function HomeScreen() {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <TouchableOpacity
+              style={globalStyles.destinationCard}
               onPress={() => handleDestinationPress(item)}
             >
               <Image

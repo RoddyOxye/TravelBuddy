@@ -76,4 +76,14 @@ export const globalStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
+  destinationCard: {
+    width: 232,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 20,
+    padding: 16,
+    marginRight: 12,
+    overflow: 'hidden',
+  },
 });
