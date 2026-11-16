@@ -1,3 +1,4 @@
+import { getGreeting } from '../utils/getGreeting';
 import { globalStyles } from '../styles/globalStyles';
 import { colors } from '../theme/colors';
 import React, { useState } from "react";
@@ -8,7 +9,6 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
-  StyleSheet,
   Alert,
 } from "react-native";
 
@@ -40,21 +40,32 @@ export default function HomeScreen() {
     Alert.alert(destination.name, destination.country);
   };
 
+  const [greeting] = useState(getGreeting);
+
   return (
     <ScrollView
   style={globalStyles.screen}
-  contentContainerStyle={{ padding: 20 }}>
-      <View style={styles.section}>
+  contentContainerStyle={globalStyles.screenContent}>
+    <View style={globalStyles.section}>
+      <Text style={globalStyles.sectionTitle}>
+        {greeting.title}
+      </Text>
+      <Text style={globalStyles.secondaryText}>
+        {greeting.subtitle}
+      </Text>
+    </View>
+      <View style={globalStyles.section}>
         <TextInput
+          placeholderTextColor={colors.textSecondary}
           placeholder="Pesquisar destinos..."
           value={search}
           onChangeText={setSearch}
-          style={styles.input}
+          style={globalStyles.input}
         />
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>
+      <View style={globalStyles.section}>
+        <Text style={globalStyles.sectionTitle}>
           Explorar destinos
         </Text>
 
@@ -67,66 +78,44 @@ export default function HomeScreen() {
                 handleDestinationPress(destination)
               }
             >
-              <Text>{destination.name}</Text>
-              <Text>{destination.country}</Text>
+              <Text style={globalStyles.bodyText}>{destination.name}</Text>
+              <Text style={globalStyles.secondaryText}>{destination.country}</Text>
             </TouchableOpacity>
           ))
         ) : (
-          <Text>Nenhum destino encontrado.</Text>
+          <Text style={globalStyles.bodyText}>Nenhum destino encontrado.</Text>
         )}
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>
+      <View style={globalStyles.section}>
+        <Text style={globalStyles.sectionTitle}>
           As minhas viagens
         </Text>
 
         <TouchableOpacity
-          style={globalStyles.card}
+          style={globalStyles.primaryButton}
           onPress={() =>
             Alert.alert("Viagens", "Funcionalidade futura")
           }
         >
-          <Text>Criar nova viagem +</Text>
+          <Text style={globalStyles.primaryButtonText}>Criar nova viagem +</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>
+      <View style={globalStyles.section}>
+        <Text style={globalStyles.sectionTitle}>
           Desafios
         </Text>
 
         <TouchableOpacity
-          style={globalStyles.card}
+          style={globalStyles.secondaryButton}
           onPress={() =>
             Alert.alert("Desafios", "Funcionalidade futura")
           }
         >
-          <Text>Explorar desafios</Text>
+          <Text style={globalStyles.secondcaryButtonText}>Explorar desafios</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
-
-// Estilos mínimos e temporários
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  section: {
-    marginTop: 24,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 12,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#CCCCCC",
-    padding: 12,
-    borderRadius: 8,
-  },
-});
